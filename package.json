@@ -1,0 +1,51 @@
+{
+  "name": "node-console",
+  "version": "0.0.1",
+  "description": "node console 有趣的打印 log print 打印颜色 style log 美化 带风格的日志",
+  "main": "./dist/core/index.cjs",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon __test__/dist/index.js",
+    "start": "node __test__/dist/index.js",
+    "test": "rspack build --config rspack.test.cjs",
+    "cjs": "rspack build --config rspack.config.cjs",
+    "esm": "rspack build --config rspack.config.mjs"
+  },
+  "exports": {
+    ".": {
+      "import": "./dist/core/index.mjs",
+      "require": "./dist/core/index.cjs"
+    }
+  },
+  "keywords": [
+    "node",
+    "console",
+    "有趣的打印",
+    "log",
+    "print",
+    "打印颜色",
+    "style",
+    "log",
+    "美化",
+    "带风格的日志"
+  ],
+  "license": "ISC",
+  "files": [
+    "README.md",
+    "package.json",
+    "dist"
+  ],
+  "repository": {
+    "type": "github",
+    "url": "https://github.com/com-hooks/node-console"
+  },
+  "devDependencies": {
+    "@rspack/cli": "^0.7.5",
+    "@types/lodash-es": "^4.17.12",
+    "nodemon": "^3.1.4",
+    "ts-node": "^10.9.2"
+  },
+  "dependencies": {
+    "lodash-es": "^4.17.21"
+  }
+}
