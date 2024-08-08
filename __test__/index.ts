@@ -1,5 +1,9 @@
 
-import { logger } from 'node-console';
+import { logger } from 'node-logger-plus';
+
+logger.on('data', function (data: { result: any; }) {
+    console.log(...data.result, 'bus on data')
+});
 
 logger.log('log', 'logger1')
 logger.error('log', 'logger1')
@@ -19,12 +23,12 @@ logger.log('log', 'logger1')
 logger.error('log', 'logger1')
 logger.warn('log', 'logger1')
 logger.info('log', 'logger1')
-logger.debug('debug', 'logger1').then((res) => {
+logger.debug('debug', 'logger1').then((res: any) => {
     console.log(res)
 })
 
 // @ts-ignore
-const logger2 = require('node-console').logger
+const logger2 = require('node-logger-plus').logger
 
 logger2.log('log', 'logger2')
 logger2.error('log', 'logger2')

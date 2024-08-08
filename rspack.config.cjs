@@ -13,7 +13,7 @@ module.exports = defineConfig({
   target: 'node',
   externalsType: 'commonjs',
   output: {
-    filename: 'core/index.cjs',
+    filename: 'cjs/index.js',
     iife: false,
     chunkFormat: 'commonjs',
     library: {

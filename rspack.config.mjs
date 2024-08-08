@@ -20,7 +20,7 @@ export default defineConfig({
     output: {
         module: true,
         chunkFormat: 'module',
-        filename: 'core/index.mjs',
+        filename: 'esm/index.js',
         library: {
             type: 'module',
         },

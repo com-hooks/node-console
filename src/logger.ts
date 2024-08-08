@@ -1,5 +1,6 @@
 import { colors, Color } from './color';
 import merge from 'lodash-es/merge';
+import { Bus } from './events';
 
 let defaultLoggerConfig = {
     log: true,
@@ -9,12 +10,21 @@ let defaultLoggerConfig = {
     error: true,
     table: true,
 };
-export type LoggerConfig = typeof defaultLoggerConfig;
-export class Logger {
+export type LoggerConfig = {
+    log?: boolean,
+    debug?: boolean,
+    info?: boolean,
+    warn?: boolean,
+    error?: boolean,
+    table?: boolean,
+};
+type LogHandlerReturn = Promise<{ enabled: Boolean, result: any[] }>;
+export class Logger extends Bus {
     logger: Console;
     caches: { [key: string]: Function } = {};
     loggerConfig: LoggerConfig = JSON.parse(JSON.stringify(defaultLoggerConfig));
     constructor(_logger = console) {
+        super();
         this.logger = _logger;
     }
     public static decoratorTime(msg: string) {
@@ -42,17 +52,24 @@ export class Logger {
     get instance() {
         return this.logger;
     }
-    log() { }
-
-    error() { }
-
-    warn() { }
-
-    info() { }
-
-    debug() { }
-
-    table() { }
+    log(..._message: any[]): LogHandlerReturn {
+        return Promise.resolve({ enabled: true, result: [] })
+    }
+    error(..._message: any[]): LogHandlerReturn {
+        return Promise.resolve({ enabled: true, result: [] })
+    }
+    warn(..._message: any[]): LogHandlerReturn {
+        return Promise.resolve({ enabled: true, result: [] })
+    }
+    info(..._message: any[]): LogHandlerReturn {
+        return Promise.resolve({ enabled: true, result: [] })
+    }
+    debug(..._message: any[]): LogHandlerReturn {
+        return Promise.resolve({ enabled: true, result: [] })
+    }
+    table(..._message: any[]): LogHandlerReturn {
+        return Promise.resolve({ enabled: true, result: [] })
+    }
 }
 
 const tags = [
@@ -73,25 +90,30 @@ const tagMapColors = {
     [tags[5]]: colors.green,
 }
 type TagType = typeof tags[number];
-
-const handlerMaps = {
+type HandlerMapsType = {
+    [x in TagType | 'default']?: (tag: TagType, ...message: string[]) => any[];
+}
+const handlerMaps: HandlerMapsType = {
     table: function (_tag: TagType, ...message: string[]) {
         const timeString = Logger.decoratorTime(`${Logger.getLocaleDateTime()}`);
-        this.logger[_tag](...message);
+        const _logger = (this as any).logger as unknown as InstanceType<typeof Logger>;
+        _logger[_tag](...message);
         const result = [`${timeString}${colors.green}【${_tag.toLocaleUpperCase()}】${colors.reset}`, message[0]];
-        this.logger.log(...result);
+        _logger.log(...result);
         return result;
     },
     default: function (_tag: TagType, ...message: string[]) {
         const timeString = Logger.decoratorTime(`${Logger.getLocaleDateTime()}`);
         const result = [`${timeString}${tagMapColors[_tag]}【${_tag.toLocaleUpperCase()}】`, ...message, colors.reset];
+        // @ts-ignore
         this.logger[_tag](...result);
         return result;
     }
 }
 
 function useCache(tag: TagType, ...message: string[]) {
-    const handler = handlerMaps[tag] ?? handlerMaps.default;
+    const handler = handlerMaps[tag] ?? handlerMaps.default!;
+    // @ts-ignore
     return handler.call(this, tag, ...message);
 }
 
@@ -100,7 +122,7 @@ tags.forEach(tag => {
     Object.defineProperty(Logger.prototype, tag, {
         enumerable: false,
         value: function (...message: string[]) {
-            let result = [];
+            let result: never[] = [];
             if (this.loggerConfig[tag] === false) {
                 return Promise.resolve({ endabled: false, result, });
             }
@@ -110,7 +132,10 @@ tags.forEach(tag => {
                 this.caches[tag] = useCache.bind(this, tag);
                 result = this.caches[tag](...message);
             }
-            return Promise.resolve({ endabled: true, result });
+            const busData = { endabled: true, result };
+            // 只有打印的才触发bus emit
+            this.emit('data', busData);
+            return Promise.resolve(busData);
         },
     })
 });
