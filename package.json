@@ -1,6 +1,6 @@
 {
   "name": "node-logger-plus",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "node console 有趣的打印 log print 打印颜色 style log 美化 带风格的日志",
   "scripts": {
     "dev": "nodemon __test__/dist/index.js",

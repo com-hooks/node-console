@@ -100,28 +100,35 @@ const tagMapColors = {
 }
 type TagType = typeof tags[number] | 'default';
 type HandlerMapsType = {
-    [x in TagType | 'default']?: (tag: TagType, ...message: any[]) => any[];
+    [x in TagType | 'default']?: (tag: TagType, ...message: any[]) => {
+        result: any[];
+        source: any[];
+    };
 
 }
 
 function createPrint(type: TagType) {
     return function (_tag: TagType, ...message: any[]) {
-        const timeString = Logger.decoratorTime(`${Logger.getLocaleDateTime()}`);
+        const time = Logger.getLocaleDateTime();
+        const timeString = Logger.decoratorTime(time);
         const endRestCode = typeof window ? '' : colors.reset; // 浏览器环境不收尾
-        const upperCaseTagName = _tag.toLocaleUpperCase();
-        const result = [`${timeString}${tagMapColors[_tag]}【${upperCaseTagName}】`, ...message, endRestCode];
+        const upperCaseTagName = `【${ _tag.toLocaleUpperCase()}】`;
+        const result = [`${timeString}${tagMapColors[_tag]}${upperCaseTagName}`, ...message, endRestCode];
         // @ts-ignore
         const _logger = (this as any).logger as InstanceType<typeof Logger>;
         const log = _logger[_tag] ?? _logger.log; // suceess 新增的tag 使用log
 
         if (type === 'table') {
             log.call(_logger, ...message);
-            const printMessage = [`${timeString}${colors.green}【${upperCaseTagName}】${colors.reset}`, message[0]];
+            const printMessage = [`${timeString}${colors.green}${upperCaseTagName}${colors.reset}`, message[0]];
             _logger.log(...printMessage); // 表格多打印一条源数据
         } else {
             log.call(_logger, ...result);
         }
-        return result;
+        return {
+            result,
+            source: [time, upperCaseTagName, ...message],
+        };
     }
 }
 const handlerMaps: HandlerMapsType = {
@@ -140,17 +147,20 @@ tags.forEach(tag => {
     Object.defineProperty(Logger.prototype, tag, {
         enumerable: false,
         value: function (...message: string[]) {
-            let result: never[] = [];
+            let data = {
+                result: [],
+                source: [],
+            };
             if (this.loggerConfig[tag] === false) {
-                return Promise.resolve({ endabled: false, result, });
+                return Promise.resolve({ endabled: false, ...data, });
             }
             if (this.caches[tag]) {
-                result = this.caches[tag].call(this, ...message);
+                data = this.caches[tag].call(this, ...message);
             } else {
                 this.caches[tag] = useCache.bind(this, tag);
-                result = this.caches[tag](...message);
+                data = this.caches[tag](...message);
             }
-            const busData = { endabled: true, result };
+            const busData = { endabled: true, ...data, };
             // 只有打印的才触发bus emit
             this.emit('data', busData);
             return Promise.resolve(busData);
@@ -159,4 +169,3 @@ tags.forEach(tag => {
 });
 
 export const logger = new Logger();
-console.log(Color.green('initialized'));

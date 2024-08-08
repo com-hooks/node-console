@@ -2,7 +2,7 @@
 import { logger, Bus } from 'node-logger-plus';
 
 logger.on('data', function (data: { result: any; }) {
-    console.log(...data.result, 'bus on data')
+    console.log(data, 'bus on data')
 });
 
 logger.log('log', 'logger1')
