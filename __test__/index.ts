@@ -1,5 +1,5 @@
 
-import { logger } from 'node-logger-plus';
+import { logger, Bus } from 'node-logger-plus';
 
 logger.on('data', function (data: { result: any; }) {
     console.log(...data.result, 'bus on data')
@@ -46,3 +46,17 @@ logger2.table([{
     name: 'logger2',
     age: 31
 }])
+
+const mitter = new Bus();
+
+mitter.on('data', (data: any) => {
+    console.log(...data, 'bus on data')
+});
+mitter.once('once', (data: any) => {
+    console.log(...data, 'once bus on data')
+});
+
+mitter.emit('data', ['bus', 'emitted', 'data'])
+mitter.emit('data', ['bus', 'emitted', 'data'])
+mitter.emit('once', ['bus', 'emitted', 'data'])
+mitter.emit('once', ['bus', 'emitted', 'data'])

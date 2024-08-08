@@ -53,25 +53,25 @@ export class Logger extends Bus {
         return this.logger;
     }
     log(..._message: any[]): LogHandlerReturn {
-        return Promise.resolve({ enabled: true, result: [] })
+        return Promise.resolve({ enabled: true, result: [] });
     }
     success(..._message: any[]): LogHandlerReturn {
         return this.log.call(this.logger, ..._message);
     }
     error(..._message: any[]): LogHandlerReturn {
-        return Promise.resolve({ enabled: true, result: [] })
+        return Promise.resolve({ enabled: true, result: [] });
     }
     warn(..._message: any[]): LogHandlerReturn {
-        return Promise.resolve({ enabled: true, result: [] })
+        return Promise.resolve({ enabled: true, result: [] });
     }
     info(..._message: any[]): LogHandlerReturn {
-        return Promise.resolve({ enabled: true, result: [] })
+        return Promise.resolve({ enabled: true, result: [] });
     }
     debug(..._message: any[]): LogHandlerReturn {
-        return Promise.resolve({ enabled: true, result: [] })
+        return Promise.resolve({ enabled: true, result: [] });
     }
     table(..._message: any[]): LogHandlerReturn {
-        return Promise.resolve({ enabled: true, result: [] })
+        return Promise.resolve({ enabled: true, result: [] });
     }
     default(..._message: any[]): LogHandlerReturn {
         return this.log.call(this.logger, ..._message);

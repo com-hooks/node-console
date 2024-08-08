@@ -81,13 +81,16 @@ colors['green'] = "\x1b[32m";
 ```
 
 ### Bus
-- 用法和mitter一样
+- 用法和mitter方向保持一致
 ```js
 import { Bus } from 'node-logger-plus';
 const mitter = new Bus();
 
 mitter.on('message', function(data) {
     console.log(data); // test data
+});
+mitter.once('test', function(data) {
+
 });
 // 支持链式调用
 mitter.emit('message', 'test data')
