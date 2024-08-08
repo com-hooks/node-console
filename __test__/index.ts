@@ -23,6 +23,7 @@ logger.log('log', 'logger1')
 logger.error('log', 'logger1')
 logger.warn('log', 'logger1')
 logger.info('log', 'logger1')
+logger.success('log', 'logger1')
 logger.debug('debug', 'logger1').then((res: any) => {
     console.log(res)
 })

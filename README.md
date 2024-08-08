@@ -20,6 +20,7 @@ logger.error('log', 'logger1')
 logger.warn('log', 'logger1')
 logger.info('log', 'logger1')
 logger.debug('debug', 'logger1')
+logger.success('log', 'logger1')
 logger.table([{
     id: 1,
     name: 'logger1',

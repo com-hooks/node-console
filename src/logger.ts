@@ -55,6 +55,9 @@ export class Logger extends Bus {
     log(..._message: any[]): LogHandlerReturn {
         return Promise.resolve({ enabled: true, result: [] })
     }
+    success(..._message: any[]): LogHandlerReturn {
+        return Promise.resolve({ enabled: true, result: [] })
+    }
     error(..._message: any[]): LogHandlerReturn {
         return Promise.resolve({ enabled: true, result: [] })
     }
@@ -79,6 +82,7 @@ const tags = [
     'info',
     'debug',
     'table',
+    'success',
 ] as const;
 
 const tagMapColors = {
@@ -88,6 +92,7 @@ const tagMapColors = {
     [tags[3]]: colors.blue,
     [tags[4]]: colors.magenta,
     [tags[5]]: colors.green,
+    [tags[6]]: colors.green,
 }
 type TagType = typeof tags[number];
 type HandlerMapsType = {
@@ -97,16 +102,19 @@ const handlerMaps: HandlerMapsType = {
     table: function (_tag: TagType, ...message: string[]) {
         const timeString = Logger.decoratorTime(`${Logger.getLocaleDateTime()}`);
         const _logger = (this as any).logger as unknown as InstanceType<typeof Logger>;
-        _logger[_tag](...message);
+        const log = _logger[_tag] ?? _logger.log;
+        log.call(_logger, ...message);
         const result = [`${timeString}${colors.green}【${_tag.toLocaleUpperCase()}】${colors.reset}`, message[0]];
         _logger.log(...result);
         return result;
     },
     default: function (_tag: TagType, ...message: string[]) {
         const timeString = Logger.decoratorTime(`${Logger.getLocaleDateTime()}`);
-        const result = [`${timeString}${tagMapColors[_tag]}【${_tag.toLocaleUpperCase()}】`, ...message, colors.reset];
-        // @ts-ignore
-        this.logger[_tag](...result);
+        const endRestCode = typeof window ? '' : colors.reset; // 浏览器环境不收尾
+        const result = [`${timeString}${tagMapColors[_tag]}【${_tag.toLocaleUpperCase()}】`, ...message, endRestCode];
+        const _logger = (this as any).logger as unknown as InstanceType<typeof Logger>;
+        const log = _logger[_tag] ?? _logger.log;
+        log.call(_logger, ...result);
         return result;
     }
 }
