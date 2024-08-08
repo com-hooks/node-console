@@ -56,7 +56,7 @@ export class Logger extends Bus {
         return Promise.resolve({ enabled: true, result: [] })
     }
     success(..._message: any[]): LogHandlerReturn {
-        return Promise.resolve({ enabled: true, result: [] })
+        return this.log.call(this.logger, ..._message);
     }
     error(..._message: any[]): LogHandlerReturn {
         return Promise.resolve({ enabled: true, result: [] })
@@ -72,6 +72,9 @@ export class Logger extends Bus {
     }
     table(..._message: any[]): LogHandlerReturn {
         return Promise.resolve({ enabled: true, result: [] })
+    }
+    default(..._message: any[]): LogHandlerReturn {
+        return this.log.call(this.logger, ..._message);
     }
 }
 
@@ -93,30 +96,37 @@ const tagMapColors = {
     [tags[4]]: colors.magenta,
     [tags[5]]: colors.green,
     [tags[6]]: colors.green,
+    default: colors.green,
 }
-type TagType = typeof tags[number];
+type TagType = typeof tags[number] | 'default';
 type HandlerMapsType = {
-    [x in TagType | 'default']?: (tag: TagType, ...message: string[]) => any[];
+    [x in TagType | 'default']?: (tag: TagType, ...message: any[]) => any[];
+
 }
-const handlerMaps: HandlerMapsType = {
-    table: function (_tag: TagType, ...message: string[]) {
-        const timeString = Logger.decoratorTime(`${Logger.getLocaleDateTime()}`);
-        const _logger = (this as any).logger as unknown as InstanceType<typeof Logger>;
-        const log = _logger[_tag] ?? _logger.log;
-        log.call(_logger, ...message);
-        const result = [`${timeString}${colors.green}【${_tag.toLocaleUpperCase()}】${colors.reset}`, message[0]];
-        _logger.log(...result);
-        return result;
-    },
-    default: function (_tag: TagType, ...message: string[]) {
+
+function createPrint(type: TagType) {
+    return function (_tag: TagType, ...message: any[]) {
         const timeString = Logger.decoratorTime(`${Logger.getLocaleDateTime()}`);
         const endRestCode = typeof window ? '' : colors.reset; // 浏览器环境不收尾
-        const result = [`${timeString}${tagMapColors[_tag]}【${_tag.toLocaleUpperCase()}】`, ...message, endRestCode];
-        const _logger = (this as any).logger as unknown as InstanceType<typeof Logger>;
-        const log = _logger[_tag] ?? _logger.log;
-        log.call(_logger, ...result);
+        const upperCaseTagName = _tag.toLocaleUpperCase();
+        const result = [`${timeString}${tagMapColors[_tag]}【${upperCaseTagName}】`, ...message, endRestCode];
+        // @ts-ignore
+        const _logger = (this as any).logger as InstanceType<typeof Logger>;
+        const log = _logger[_tag] ?? _logger.log; // suceess 新增的tag 使用log
+
+        if (type === 'table') {
+            log.call(_logger, ...message);
+            const printMessage = [`${timeString}${colors.green}【${upperCaseTagName}】${colors.reset}`, message[0]];
+            _logger.log(...printMessage); // 表格多打印一条源数据
+        } else {
+            log.call(_logger, ...result);
+        }
         return result;
     }
+}
+const handlerMaps: HandlerMapsType = {
+    table: createPrint('table'),
+    default: createPrint('default')
 }
 
 function useCache(tag: TagType, ...message: string[]) {

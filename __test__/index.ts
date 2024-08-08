@@ -25,7 +25,7 @@ logger.warn('log', 'logger1')
 logger.info('log', 'logger1')
 logger.success('log', 'logger1')
 logger.debug('debug', 'logger1').then((res: any) => {
-    console.log(res)
+    console.log(res, 'debugger')
 })
 
 // @ts-ignore
