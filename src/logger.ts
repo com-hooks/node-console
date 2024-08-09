@@ -1,6 +1,5 @@
 import { colors, Color } from './color';
-import merge from 'lodash-es/merge';
-import { Bus } from './events';
+import { BusPlus } from 'bus-plus';
 
 let defaultLoggerConfig = {
     log: true,
@@ -19,7 +18,7 @@ export type LoggerConfig = {
     table?: boolean,
 };
 type LogHandlerReturn = Promise<{ enabled: Boolean, result: any[] }>;
-export class Logger extends Bus {
+export class Logger extends BusPlus {
     logger: Console;
     caches: { [key: string]: Function } = {};
     loggerConfig: LoggerConfig = JSON.parse(JSON.stringify(defaultLoggerConfig));
@@ -41,8 +40,8 @@ export class Logger extends Bus {
      * 设置loggerConfig.logger 控制对应函数是否打印
      * @param config 
      */
-    setConfig(config: LoggerConfig) {
-        this.loggerConfig = merge({}, this.loggerConfig, config);
+    setConfig(config: LoggerConfig = {}) {
+        this.loggerConfig = Object.assign({}, this.loggerConfig, config);
         this.caches = {};
         this.logger.log(Color.green('设置【CONFIG】Successify'));
     }

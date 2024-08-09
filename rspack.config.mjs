@@ -8,7 +8,6 @@ export default defineConfig({
     },
     devtool: false,
     externals: {
-        'lodash-es': 'lodash-es',
     },
     target: 'es5',
     optimization: {

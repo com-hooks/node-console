@@ -9,7 +9,7 @@
 - ![promise-log](https://github.com/user-attachments/assets/4e47635d-d9f8-4556-a46b-fe412a9be868)
 ### 暴露的函数
 ```js
-import { logger, Bus, Color, Logger } from 'node-logger-plus';
+import { logger, BusPlus, Color, Logger } from 'node-logger-plus';
 ```
 ### 使用
 ```js
@@ -80,11 +80,13 @@ colors['green'] = "\x1b[32m";
 
 ```
 
-### Bus
+### BusPlus
 - 用法和mitter方向保持一致
+- logger 内部通过继承 BusPlus 拥有 bus能力 
+- https://www.npmjs.com/package/modern-bus?activeTab=readme
 ```js
-import { Bus } from 'node-logger-plus';
-const mitter = new Bus();
+import { BusPlus } from 'bus-plus';
+const mitter = new BusPlus();
 
 mitter.on('message', function(data) {
     console.log(data); // test data

@@ -8,7 +8,6 @@ module.exports = defineConfig({
   },
   devtool: false,
   externals: {
-    'lodash-es': 'lodash-es',
   },
   target: 'node',
   externalsType: 'commonjs',

@@ -1,8 +1,8 @@
 
-import { logger, Bus } from 'node-logger-plus';
+import { logger } from 'node-logger-plus';
 
 logger.on('data', function (data: { result: any; }) {
-    console.log(data, 'bus on data')
+    // console.log(data, 'bus on data')
 });
 
 logger.log('log', 'logger1')
@@ -47,7 +47,9 @@ logger2.table([{
     age: 31
 }])
 
-const mitter = new Bus();
+import { BusPlus } from 'bus-plus';
+
+const mitter = new BusPlus();
 
 mitter.on('data', (data: any) => {
     console.log(...data, 'bus on data')
