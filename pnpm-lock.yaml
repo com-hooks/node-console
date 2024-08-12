@@ -18,6 +18,9 @@ importers:
       '@rspack/core':
         specifier: ^0.7.5
         version: 0.7.5
+      node-logger-plus:
+        specifier: workspace:^
+        version: 'link:'
       nodemon:
         specifier: ^3.1.4
         version: 3.1.4
