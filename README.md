@@ -83,7 +83,7 @@ colors['green'] = "\x1b[32m";
 ### BusPlus
 - 用法和mitter方向保持一致
 - logger 内部通过继承 BusPlus 拥有 bus能力 
-- https://www.npmjs.com/package/modern-bus?activeTab=readme
+- https://www.npmjs.com/package/bus-plus
 ```js
 import { BusPlus } from 'bus-plus';
 const mitter = new BusPlus();

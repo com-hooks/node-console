@@ -8,6 +8,7 @@ module.exports = defineConfig({
   },
   devtool: false,
   externals: {
+    'bus-plus': 'bus-plus',
   },
   target: 'node',
   externalsType: 'commonjs',
