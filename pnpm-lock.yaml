@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       bus-plus:
-        specifier: ^0.2.1
-        version: 0.2.1
+        specifier: ^0.2.3
+        version: 0.2.3
     devDependencies:
       '@rspack/cli':
         specifier: ^0.7.5
@@ -721,8 +721,8 @@ packages:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
     dev: true
 
-  /bus-plus@0.2.1:
-    resolution: {integrity: sha512-iOHuo87YVkKZFYuh5wvo7cglhOJMI7bB9EX3O1Bq/EXoqrApYy6TdcX36ep576oUHvai2V7ngMuXf5owvd9sZA==}
+  /bus-plus@0.2.3:
+    resolution: {integrity: sha512-PaMc8l5FNhF5UQk+lUhp2zl7yx58TbOn2YCRdQZrcWKzBt9UQKn7lK4iSG/bqfc3bClShtrhIf0O0b2OOiYPAg==}
     dev: false
 
   /bytes@3.0.0:

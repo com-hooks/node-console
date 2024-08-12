@@ -1,6 +1,6 @@
 {
   "name": "node-logger-plus",
-  "version": "0.2.5",
+  "version": "0.2.6",
   "description": "node console 有趣的打印 log print 打印颜色 style log 美化 带风格的日志",
   "main": "./dist/esm/index.js",
   "types": "./dist/types/index.d.ts",
@@ -52,6 +52,6 @@
     "typescript": "^5.5.4"
   },
   "dependencies": {
-    "bus-plus": "^0.2.1"
+    "bus-plus": "^0.2.3"
   }
 }
