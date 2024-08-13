@@ -16,9 +16,7 @@ module.exports = defineConfig({
                     type: 'commonjs2',
                 },
             },
-            externals: {
-                'bus-plus': 'bus-plus',
-            },
+
         },
         // 编译esmodule
         {
@@ -53,6 +51,7 @@ module.exports = defineConfig({
         },
         devtool: false,
         externals: {
+            'bus-plus': 'bus-plus',
         },
         module: {
             rules: [

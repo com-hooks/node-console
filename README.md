@@ -9,7 +9,7 @@
 - ![promise-log](https://github.com/user-attachments/assets/4e47635d-d9f8-4556-a46b-fe412a9be868)
 ### 暴露的函数
 ```js
-import { logger, BusPlus, Color, Logger } from 'node-logger-plus';
+import { logger, Color, Logger } from 'node-logger-plus';
 ```
 ### 使用
 ```js
