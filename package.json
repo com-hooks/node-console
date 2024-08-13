@@ -7,7 +7,6 @@
   "scripts": {
     "dev": "nodemon __test__/dist/index.js",
     "test": "node ./rspack.test.js",
-    "dts": "npx tsc -w",
     "lib": "rspack-lib"
   },
   "exports": {
@@ -47,6 +46,8 @@
     "@rspack/core": "^0.7.5",
     "node-logger-plus": "workspace:^",
     "nodemon": "^3.1.4",
+    "rspack-dts-plugin": "^0.1.0",
+    "rspack-lib": "^0.1.4",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.4"
   },

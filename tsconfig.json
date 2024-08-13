@@ -2,11 +2,6 @@
     "compilerOptions": {
         "types": ["@rspack/core/module"],
         "target": "es2016",   
-        "declaration": true,
-        "isolatedModules": true,
-        "declarationDir": "./dist/types",
-        "outDir": "./__tsc/dist",
-        "strict": true,
         "module": "NodeNext",
         "moduleResolution": "NodeNext"
     },

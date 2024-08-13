@@ -1,4 +1,6 @@
 const { defineConfig } = require("rspack-lib");
+const { RspackDtsPlugin } = require('rspack-dts-plugin');
+
 module.exports = defineConfig({
     // 会合并rspack中的配置
     lib: [
@@ -35,6 +37,11 @@ module.exports = defineConfig({
                     type: 'module',
                 },
             },
+            plugins: [
+                new RspackDtsPlugin({
+                    dts: true
+                }),
+            ]
         },
     ],
     // rspack 配置
